@@ -26,14 +26,30 @@ export const FORMACAO: Formacao = {
 export const CERTIFICACOES: Certificacao[] = [
   {
     nome: {
-      pt: "Git e GitHub do básico ao avançado",
-      en: "Git and GitHub from basic to advanced",
+      pt: "Django Web Framework e Django Rest Framework (DRF)",
+      en: "Django Web Framework and Django Rest Framework (DRF)",
     },
-    emissor: {
-      pt: "c/ gist e GitHub Pages",
-      en: "with gist and GitHub Pages",
-    },
+    emissor: { pt: "Udemy", en: "Udemy" },
     tipo: "CERT",
+    url: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-beb20879-e5f9-439f-913d-ec5ba0ff2946.pdf",
+  },
+  {
+    nome: {
+      pt: "Java 2022 COMPLETO: Do Zero ao Profissional + Projetos!",
+      en: "Java 2022 COMPLETE: From Zero to Professional + Projects!",
+    },
+    emissor: { pt: "Udemy", en: "Udemy" },
+    tipo: "CERT",
+    url: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-4b8b5d20-6ae0-4f3b-b817-fa300a9d2fdf.pdf",
+  },
+  {
+    nome: {
+      pt: "Git e GitHub do básico ao avançado (c/ gist e GitHub Pages)",
+      en: "Git and GitHub from basic to advanced (with gist and GitHub Pages)",
+    },
+    emissor: { pt: "Udemy", en: "Udemy" },
+    tipo: "CERT",
+    url: "https://udemy-certificate.s3.amazonaws.com/pdf/UC-f378aed7-102e-4e20-9777-a9f6e661575f.pdf",
   },
   {
     nome: {

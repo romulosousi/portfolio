@@ -29,6 +29,7 @@ export interface Certificacao {
   nome: LocalizedString;
   emissor: LocalizedString;
   tipo: string;
+  url?: string;
 }
 
 export interface SkillGroup {

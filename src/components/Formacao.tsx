@@ -72,23 +72,43 @@ export function Formacao() {
               </span>
             </div>
             <div className="divide-y divide-line">
-              {CERTIFICACOES.map((c, i) => (
-                <div key={i} className="px-5 py-4 row-hover">
+              {CERTIFICACOES.map((c, i) => {
+                const inner = (
                   <div className="flex items-start gap-3">
                     <span className="mono text-[10px] uppercase tracking-[0.06em] px-1.5 py-0.5 rounded-[2px] bg-bg-3 border border-line text-green mt-0.5">
                       {c.tipo}
                     </span>
                     <div className="flex-1">
-                      <div className="font-sans text-[14px] text-fg-0 leading-[1.4]">
+                      <div className="font-sans text-[14px] text-fg-0 leading-[1.4] group-hover:text-green transition-colors">
                         {c.nome[lang]}
                       </div>
                       <div className="mono text-[11px] text-fg-2 mt-1">
                         {c.emissor[lang]}
                       </div>
                     </div>
+                    {c.url && (
+                      <span className="mono text-[10px] text-fg-3 group-hover:text-green transition-colors mt-0.5">
+                        ↗
+                      </span>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+                return c.url ? (
+                  <a
+                    key={i}
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-5 py-4 row-hover group"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={i} className="px-5 py-4 row-hover group">
+                    {inner}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
