@@ -117,6 +117,10 @@ export interface Translations {
   demo_no_edition: string;
   demo_no_results: string;
   demo_offline_notice: string;
+  pag_page: string;
+  pag_of: string;
+  pag_prev: string;
+  pag_next: string;
 
   // contato
   contact_tag: string;

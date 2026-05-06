@@ -378,9 +378,17 @@ export function Demo() {
   );
 }
 
+const PAGE_SIZE = 5;
+
 function DemoResultado({ resultado }: { resultado: DiarioResultado }) {
   const { t } = useT();
+  const [page, setPage] = useState(1);
   const isOffline = resultado.modo === "mock";
+
+  // Reset paginação quando a busca muda (novo resultado).
+  useEffect(() => {
+    setPage(1);
+  }, [resultado]);
 
   if (resultado.motivo === "sem_edicao") {
     return (
@@ -444,65 +452,105 @@ function DemoResultado({ resultado }: { resultado: DiarioResultado }) {
           {t.demo_no_results}
         </div>
       ) : (
-        <div className="hairline rounded-[4px] bg-bg-1">
-          <div className="flex items-center justify-between px-4 h-9 border-b border-line">
-            <div className="flex items-center gap-3">
-              <span className="mono text-[10px] uppercase tracking-[0.12em] text-fg-2">
-                recortes.json
-              </span>
-              <span className="mono text-[10px] text-fg-3">·</span>
-              <span className="mono text-[10px] text-fg-1">
-                "{resultado.nome}"
-              </span>
-              <span className="mono text-[10px] text-fg-3">
-                {resultado.dataBR}
-              </span>
-            </div>
-            <div className="mono text-[10px] text-green">
-              {resultado.recortes.length} {t.demo_res_found}
-            </div>
-          </div>
-          <div className="divide-y divide-line">
-            {resultado.recortes.map((r) => (
-              <div key={r.id} className="px-4 py-3.5 row-hover">
-                <div className="flex items-center justify-between flex-wrap gap-2 mb-1.5">
-                  <div className="flex items-center gap-3 mono text-[10px] uppercase tracking-[0.08em] text-fg-2">
-                    <span className="text-green">
-                      {t.demo_clip_page} {r.page}
-                    </span>
-                    <span className="text-fg-3">·</span>
-                    <span>
-                      {t.demo_clip_section}:{" "}
-                      <span className="text-fg-1 normal-case tracking-normal">
-                        {r.section}
-                      </span>
-                    </span>
-                  </div>
-                  {r.pdfUrl ? (
-                    <a
-                      href={r.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mono text-[10px] uppercase tracking-[0.08em] text-fg-2 hover:text-green transition-colors"
-                    >
-                      {t.demo_open_pdf} ↗
-                    </a>
-                  ) : (
-                    <span className="mono text-[10px] uppercase tracking-[0.08em] text-fg-3 cursor-not-allowed">
-                      {t.demo_open_pdf} ↗
-                    </span>
-                  )}
+        (() => {
+          const totalPages = Math.max(
+            1,
+            Math.ceil(resultado.recortes.length / PAGE_SIZE)
+          );
+          const safePage = Math.min(page, totalPages);
+          const sliceStart = (safePage - 1) * PAGE_SIZE;
+          const sliceEnd = sliceStart + PAGE_SIZE;
+          const visible = resultado.recortes.slice(sliceStart, sliceEnd);
+          const showRange = `${sliceStart + 1}-${Math.min(sliceEnd, resultado.recortes.length)}`;
+          return (
+            <div className="hairline rounded-[4px] bg-bg-1">
+              <div className="flex items-center justify-between px-4 h-9 border-b border-line">
+                <div className="flex items-center gap-3">
+                  <span className="mono text-[10px] uppercase tracking-[0.12em] text-fg-2">
+                    recortes.json
+                  </span>
+                  <span className="mono text-[10px] text-fg-3">·</span>
+                  <span className="mono text-[10px] text-fg-1">
+                    "{resultado.nome}"
+                  </span>
+                  <span className="mono text-[10px] text-fg-3">
+                    {resultado.dataBR}
+                  </span>
                 </div>
-                <p
-                  className="font-sans text-[14px] text-fg-0 leading-[1.55]"
-                  dangerouslySetInnerHTML={{
-                    __html: highlightName(r.text, resultado.nome),
-                  }}
-                />
+                <div className="mono text-[10px] text-green tnum">
+                  {showRange} / {resultado.recortes.length}
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="divide-y divide-line">
+                {visible.map((r) => (
+                  <div key={r.id} className="px-4 py-3.5 row-hover">
+                    <div className="flex items-center justify-between flex-wrap gap-2 mb-1.5">
+                      <div className="flex items-center gap-3 mono text-[10px] uppercase tracking-[0.08em] text-fg-2">
+                        <span className="text-green">
+                          {t.demo_clip_page} {r.page}
+                        </span>
+                        <span className="text-fg-3">·</span>
+                        <span>
+                          {t.demo_clip_section}:{" "}
+                          <span className="text-fg-1 normal-case tracking-normal">
+                            {r.section}
+                          </span>
+                        </span>
+                      </div>
+                      {r.pdfUrl ? (
+                        <a
+                          href={r.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mono text-[10px] uppercase tracking-[0.08em] text-fg-2 hover:text-green transition-colors"
+                        >
+                          {t.demo_open_pdf} ↗
+                        </a>
+                      ) : (
+                        <span className="mono text-[10px] uppercase tracking-[0.08em] text-fg-3 cursor-not-allowed">
+                          {t.demo_open_pdf} ↗
+                        </span>
+                      )}
+                    </div>
+                    <p
+                      className="font-sans text-[14px] text-fg-0 leading-[1.55]"
+                      dangerouslySetInnerHTML={{
+                        __html: highlightName(r.text, resultado.nome),
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-4 h-10 border-t border-line mono text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={safePage === 1}
+                    className="flex items-center gap-1.5 px-2 h-7 rounded-[3px] uppercase tracking-[0.08em] text-fg-1 hover:text-green hover:bg-bg-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg-1"
+                  >
+                    <span aria-hidden>←</span>
+                    <span>{t.pag_prev}</span>
+                  </button>
+                  <span className="text-fg-2 tnum">
+                    {t.pag_page}{" "}
+                    <span className="text-fg-0">{safePage}</span> {t.pag_of}{" "}
+                    <span className="text-fg-0">{totalPages}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={safePage === totalPages}
+                    className="flex items-center gap-1.5 px-2 h-7 rounded-[3px] uppercase tracking-[0.08em] text-fg-1 hover:text-green hover:bg-bg-2 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg-1"
+                  >
+                    <span>{t.pag_next}</span>
+                    <span aria-hidden>→</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })()
       )}
     </>
   );

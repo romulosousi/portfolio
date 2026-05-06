@@ -122,6 +122,10 @@ export const en: Translations = {
   demo_no_results: "no clippings matching that name in the edition",
   demo_offline_notice:
     "API unavailable — showing demo data (offline mode)",
+  pag_page: "page",
+  pag_of: "of",
+  pag_prev: "previous",
+  pag_next: "next",
 
   contact_tag: "CONTACT / GET IN TOUCH",
   contact_title_a: "let's",

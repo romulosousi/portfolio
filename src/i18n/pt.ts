@@ -122,6 +122,10 @@ export const pt: Translations = {
   demo_no_results: "nenhum trecho com esse nome na edição",
   demo_offline_notice:
     "API indisponível — exibindo dados de demonstração (modo offline)",
+  pag_page: "página",
+  pag_of: "de",
+  pag_prev: "anterior",
+  pag_next: "próxima",
 
   contact_tag: "CONTATO / GET IN TOUCH",
   contact_title_a: "vamos",
