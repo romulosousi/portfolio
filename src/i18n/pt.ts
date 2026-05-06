@@ -20,7 +20,7 @@ export const pt: Translations = {
   role: "role",
   years: "experiência",
   graduation: "graduation",
-  course_name: "Computer Science",
+  course_name: "Ciências da Computação",
   tcc_label: "tcc",
   tema_tcc: "tema_tcc",
   tcc_desc:

@@ -1,22 +1,6 @@
 import { ME } from "@/data/pessoal";
 import { useT } from "@/hooks/useT";
 
-const ASCII = ` ░░░░░░░░░░░░░░░░░░░░░░░░░░
- ░░░░░░░░░░██████░░░░░░░░░░
- ░░░░░░░██░░░░░░██░░░░░░░░░
- ░░░░░░██░██░░██░░██░░░░░░░
- ░░░░░░██░░░░░░░░░██░░░░░░░
- ░░░░░░██░░░██████░░██░░░░░
- ░░░░░░░██░░░░░░░░░██░░░░░░
- ░░░░░░░░██████████░░░░░░░░
- ░░░░░░░░░░░░██░░░░░░░░░░░░
- ░░░░░░░░██████████░░░░░░░░
- ░░░░░░██░░░░░░░░░░██░░░░░░
- ░░░░██░░░░░░░░░░░░░░██░░░░
- ░░░░██░░░░░░░░░░░░░░██░░░░
- ░░░░██░░░░░░░░░░░░░░██░░░░
- ░░░░░░██████████████░░░░░░`;
-
 export function Hero() {
   const { t, lang } = useT();
   return (
@@ -98,7 +82,15 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="ascii-portrait mb-3 select-none">{ASCII}</div>
+            <div className="mb-3 hairline rounded-[4px] overflow-hidden bg-bg-2 aspect-square">
+              <img
+                src="/me.jpeg"
+                alt={ME.nome}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
             <div className="space-y-1.5 mono text-[11px]">
               <Row label={t.name} value="Rômulo Souza" />

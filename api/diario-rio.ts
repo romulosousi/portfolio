@@ -11,8 +11,10 @@ const UA =
 
 const FETCH_TIMEOUT_MS = 8000;
 const MAX_RECORTES = 80;
-const CONTEXT_BEFORE = 180;
-const CONTEXT_AFTER = 180;
+// Hard cap on the paragraph window (chars before/after the match) — prevents
+// runaway slices when the text has no clear sentence boundary nearby.
+const MAX_PARA_BEFORE = 1200;
+const MAX_PARA_AFTER = 1200;
 // Soft deadline used to bail out of remaining work before the 10s Vercel
 // Hobby hard timeout. Leaves ~1.5s for response serialization.
 const SOFT_DEADLINE_MS = 8500;
@@ -139,6 +141,61 @@ function extractPagesText(buf: Buffer): {
   }
 }
 
+// Detecta fim de sentença forte: ". " seguido de maiúscula, dígito ou aspas
+// (início provável de novo ato/parágrafo no DOM-RJ). Filtra abreviações comuns
+// como "Sr.", "art.", "n.", "nº.", "Dr." que não delimitam parágrafo.
+const ABBREV = /\b(?:art|sr|sra|dr|dra|n[º°]?|cap|inc|al|p|fl|fls|pág|p[áa]g)\.?$/i;
+
+function isSentenceBoundary(text: string, periodIdx: number): boolean {
+  // text[periodIdx] === "."
+  if (text[periodIdx + 1] !== " ") return false;
+  const next = text[periodIdx + 2];
+  if (!next) return false;
+  if (!/[A-ZÀ-Ý0-9"]/.test(next)) return false;
+  // Look back at the word before the period — skip abbreviations
+  const lookBack = text.slice(Math.max(0, periodIdx - 12), periodIdx);
+  if (ABBREV.test(lookBack)) return false;
+  return true;
+}
+
+function extractParagraph(
+  pageText: string,
+  idx: number,
+  nameLen: number
+): { text: string; truncStart: boolean; truncEnd: boolean } {
+  // Walk back from `idx` to find the start of the current paragraph/ato.
+  // Stop at the first ". <Capital>" we find (excluding abbreviations), or at
+  // MAX_PARA_BEFORE chars, or at the page start.
+  let start = Math.max(0, idx - MAX_PARA_BEFORE);
+  let foundStart = start === 0;
+  for (let i = idx - 2; i >= start; i--) {
+    if (pageText[i] === "." && isSentenceBoundary(pageText, i)) {
+      start = i + 2; // skip ". "
+      foundStart = true;
+      break;
+    }
+  }
+
+  // Walk forward from end-of-name to find the end of the paragraph/ato.
+  const minEnd = idx + nameLen;
+  const maxEnd = Math.min(pageText.length, minEnd + MAX_PARA_AFTER);
+  let end = maxEnd;
+  let foundEnd = maxEnd === pageText.length;
+  for (let i = minEnd; i < maxEnd - 2; i++) {
+    if (pageText[i] === "." && isSentenceBoundary(pageText, i)) {
+      end = i + 1; // include the period itself
+      foundEnd = true;
+      break;
+    }
+  }
+
+  return {
+    text: pageText.slice(start, end).trim(),
+    truncStart: !foundStart,
+    truncEnd: !foundEnd,
+  };
+}
+
 function searchRecortes(
   pages: string[],
   nome: string,
@@ -158,19 +215,18 @@ function searchRecortes(
     while (true) {
       const idx = pageN.indexOf(target, from);
       if (idx === -1) break;
-      const start = Math.max(0, idx - CONTEXT_BEFORE);
-      const end = Math.min(pageText.length, idx + target.length + CONTEXT_AFTER);
-      const raw = pageText
-        .slice(start, end)
-        .replace(/\s+/g, " ")
-        .trim();
-      const prefix = start > 0 ? "..." : "";
-      const suffix = end < pageText.length ? "..." : "";
+      const { text, truncStart, truncEnd } = extractParagraph(
+        pageText,
+        idx,
+        target.length
+      );
+      const prefix = truncStart ? "..." : "";
+      const suffix = truncEnd ? "..." : "";
       recortes.push({
         id: nextId++,
         page: p + 1,
         section: edicaoLabel,
-        text: `${prefix}${raw}${suffix}`,
+        text: `${prefix}${text}${suffix}`,
         pdfUrl,
       });
       from = idx + target.length;
