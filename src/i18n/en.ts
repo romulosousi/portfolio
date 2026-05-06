@@ -86,12 +86,7 @@ export const en: Translations = {
   sk_g7: "infra & devops",
   sk_extra_a1: "Digital Certificate A1",
   sk_extra_methods: ["Scrum", "English (intermediate)"],
-  sk_domain_items: [
-    "RPA",
-    "Web Scraping",
-    "Process mapping",
-    "Technical documentation",
-  ],
+  sk_domain_items: ["RPA", "WebScraping"],
 
   demo_tag: "DEMO",
   demo_title_a: "Recortes no Diario Oficial",

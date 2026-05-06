@@ -13,7 +13,7 @@ export function buildSkills(t: Translations): SkillGroup[] {
     },
     {
       titulo: t.sk_g3,
-      items: ["Pandas", "OpenPyXL", "Regex", "APIs REST", t.sk_extra_a1],
+      items: ["Pandas", "OpenPyXL", "Regex", "APIs REST"],
     },
     {
       titulo: t.sk_g7,
@@ -27,27 +27,6 @@ export function buildSkills(t: Translations): SkillGroup[] {
         "Redis",
       ],
     },
-    {
-      titulo: t.sk_g4,
-      items: [
-        "Holmes",
-        "DominioWeb",
-        "Novajus",
-        "Thomson Reuters",
-        "MV Soul",
-        "Pipefy",
-        "Elaw",
-        "GCPJ",
-        "Citrix",
-        "Microsoft Authenticator",
-        "Active Directory",
-        "Microsoft Dynamics",
-        "Assyst",
-        "Zabbix",
-        "Deskmanager",
-      ],
-    },
     { titulo: t.sk_g5, items: t.sk_domain_items },
-    { titulo: t.sk_g6, items: t.sk_extra_methods },
   ];
 }
