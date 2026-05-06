@@ -123,11 +123,6 @@ export function Demo() {
     log(`config: nome="${nome}" data=${dataBR}`, "muted");
     await sleep(320);
     log("conectando ao DOM-RJ (doweb.rio.rj.gov.br)...", "info");
-    await sleep(360);
-    log(
-      `GET /apifront/portal/edicoes/edicoes_from_data/${data}.json`,
-      "muted"
-    );
     await sleep(380);
     log("baixando edição (~5-8MB) — pode levar até ~20s", "muted");
 
@@ -137,8 +132,7 @@ export function Demo() {
     let stage = 0;
     const progressMessages = [
       "  ↳ aguardando bytes do servidor DOM-RJ...",
-      "  ↳ ainda baixando — servidor é lento mesmo",
-      "  ↳ baixando... ~50% provavelmente",
+      "  ↳ baixando... 50%",
       "  ↳ extraindo texto via mupdf (WASM)...",
       "  ↳ buscando ocorrências por página...",
       "  ↳ quase lá — finalizando recortes",
