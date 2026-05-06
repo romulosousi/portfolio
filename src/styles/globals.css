@@ -141,16 +141,19 @@ body {
   animation: logIn 0.18s ease-out;
 }
 .ticker-track {
-  animation: ticker 12s linear infinite;
+  animation: ticker 40s linear infinite;
+  animation-fill-mode: both;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 @keyframes ticker {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 @keyframes blink {
