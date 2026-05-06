@@ -141,7 +141,7 @@ body {
   animation: logIn 0.18s ease-out;
 }
 .ticker-track {
-  animation: ticker 40s linear infinite;
+  animation: ticker 22s linear infinite;
   animation-fill-mode: both;
   will-change: transform;
   transform: translate3d(0, 0, 0);
