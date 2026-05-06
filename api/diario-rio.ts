@@ -208,9 +208,13 @@ export default async function handler(
   }
 
   const t0 = Date.now();
+  const tlog = (msg: string) =>
+    console.log(`[+${Date.now() - t0}ms] ${msg}`);
 
   try {
+    tlog("start fetchListing");
     const itens = await fetchListing(data);
+    tlog(`got listing: ${itens.length} editions`);
     if (itens.length === 0) {
       const runtime = `${((Date.now() - t0) / 1000).toFixed(1)}s`;
       const out: Resultado = {
@@ -262,12 +266,14 @@ export default async function handler(
       } catch {
         continue;
       }
+      tlog(`pdf downloaded: id=${item.id} size=${(buf.length / 1e6).toFixed(2)}MB`);
 
       const label = item.tipo_edicao_nome ?? `Nº ${item.numero}`;
       edicaoLabels.push(`Nº ${item.numero}`);
 
       const pdfUrl = `${DOWNLOAD_URL}/${item.id}`;
       const { pages, totalPages } = extractPagesText(buf);
+      tlog(`mupdf parsed: ${totalPages} pages`);
       totalPaginas += totalPages;
 
       const found = searchRecortes(

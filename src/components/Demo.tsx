@@ -111,7 +111,7 @@ export function Demo() {
     )}&data=${encodeURIComponent(data)}`;
 
     const controller = new AbortController();
-    const clientTimeout = window.setTimeout(() => controller.abort(), 15000);
+    const clientTimeout = window.setTimeout(() => controller.abort(), 60000);
     const fetchPromise = fetch(url, { signal: controller.signal })
       .then(async (r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -129,7 +129,27 @@ export function Demo() {
       "muted"
     );
     await sleep(380);
-    log("baixando edição e extraindo texto (pdf-parse)...", "muted");
+    log("baixando edição (~5-8MB) — pode levar até ~20s", "muted");
+
+    // While the fetch is in-flight, keep the terminal alive with periodic
+    // progress logs every ~3s. They stop the moment the real fetch resolves.
+    let resolved = false;
+    let stage = 0;
+    const progressMessages = [
+      "  ↳ aguardando bytes do servidor DOM-RJ...",
+      "  ↳ ainda baixando — servidor é lento mesmo",
+      "  ↳ baixando... ~50% provavelmente",
+      "  ↳ extraindo texto via mupdf (WASM)...",
+      "  ↳ buscando ocorrências por página...",
+      "  ↳ quase lá — finalizando recortes",
+      "  ↳ serializando resposta...",
+    ];
+    const progressTimer = window.setInterval(() => {
+      if (resolved) return;
+      const msg = progressMessages[Math.min(stage, progressMessages.length - 1)];
+      log(msg, "muted");
+      stage += 1;
+    }, 3000);
 
     let real: DiarioResultado | null = null;
     let fetchErr: Error | null = null;
@@ -137,6 +157,9 @@ export function Demo() {
       real = await fetchPromise;
     } catch (e) {
       fetchErr = e instanceof Error ? e : new Error(String(e));
+    } finally {
+      resolved = true;
+      window.clearInterval(progressTimer);
     }
 
     if (!real || fetchErr) {

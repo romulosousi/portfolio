@@ -11,7 +11,7 @@ export const ME: Pessoal = {
     url: "https://github.com/romulosousi",
   },
   linkedin: {
-    handle: "linkedin.com/in/romulosouza",
-    url: "https://www.linkedin.com/in/romulosouza",
+    handle: "linkedin.com/in/romulosousi",
+    url: "https://www.linkedin.com/in/romulosousi",
   },
 };
