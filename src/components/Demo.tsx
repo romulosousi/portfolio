@@ -62,7 +62,7 @@ function buildMockResult(nome: string, data: string, lang: "pt" | "en"): DiarioR
 
 export function Demo() {
   const { t, lang } = useT();
-  const [nome, setNome] = useState("João da Silva");
+  const [nome, setNome] = useState("João Souza");
   const [data, setData] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() - 1);
@@ -352,19 +352,7 @@ export function Demo() {
               </div>
             </div>
 
-            {resultado ? (
-              <DemoResultado resultado={resultado} />
-            ) : (
-              <div className="hairline rounded-[4px] bg-bg-1 p-8 text-center mono text-[11px] uppercase tracking-[0.1em] text-fg-3">
-                <div className="mb-3 text-fg-2">{t.demo_empty_a}</div>
-                <div>
-                  {t.demo_empty_b}{" "}
-                  <span className="text-green">
-                    {t.demo_run.toUpperCase()}
-                  </span>
-                </div>
-              </div>
-            )}
+            {resultado && <DemoResultado resultado={resultado} />}
           </div>
         </div>
       </div>
