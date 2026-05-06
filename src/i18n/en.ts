@@ -91,7 +91,7 @@ export const en: Translations = {
 
   demo_tag: "DEMO",
   demo_title_a: "Clippings from the Diario Oficial",
-  demo_title_b: "city of rio",
+  demo_title_b: "City of Rio de Janeiro",
   demo_sub:
     "RPA automation that queries the Rio de Janeiro Municipal Official Gazette (DOM-RJ), downloads the edition published on the given date and locates clippings mentioning the searched name — a typical use case for automated screening of official publications.",
   demo_params: "params.toml",

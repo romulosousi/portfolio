@@ -91,7 +91,7 @@ export const pt: Translations = {
 
   demo_tag: "DEMO",
   demo_title_a: "Recortes no Diario Oficial",
-  demo_title_b: "pref rj",
+  demo_title_b: "Prefeitura do Rio de Janeiro",
   demo_sub:
     "Automação RPA que consulta o Diário Oficial do Município do Rio de Janeiro (DOM-RJ), baixa a edição publicada na data informada e localiza recortes que mencionem o nome buscado — caso de uso típico de triagem automatizada de publicações oficiais.",
   demo_params: "params.toml",
