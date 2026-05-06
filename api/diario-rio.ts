@@ -154,32 +154,48 @@ function isSentenceBoundary(text: string, periodIdx: number): boolean {
   return true;
 }
 
-// Detecta fronteira de linha em listas numeradas tipo "287º 2477074 NOME ...".
-// O DOM-RJ publica listas de classificados / concursos / processos numa única
-// linha sem pontuação, e sem essa heurística os recortes pegam dezenas de
-// entradas vizinhas até bater no cap de chars.
-//
-// `i` deve ser uma posição de espaço. Retorna true se logo após o espaço
-// começa um padrão tipo `\d{1,4}[ºo°]\s+\d{4,}` (número de ordem + ID).
+// Detecta fronteira de linha em listas tabulares do DOM-RJ. Suporta dois
+// formatos comuns:
+//   A) "\d{1,4}[ºo°] \d{4,}"  — listas de classificação tipo "287º 2477074"
+//   B) "\d{5,7} <NOME EM CAIXA>"  — listas com ID puro tipo "30206 NORMA"
+// Sem essa heurística os recortes pegavam dezenas de entradas vizinhas até
+// bater no fim da página.
 function isRowBoundary(text: string, i: number): boolean {
   if (text[i] !== " ") return false;
   let j = i + 1;
-  // Consome dígitos da posição (1-4 dígitos)
   const digitStart = j;
   while (j < text.length && /\d/.test(text[j])) j++;
   const digits = j - digitStart;
-  if (digits < 1 || digits > 4) return false;
-  if (text[j] !== "º" && text[j] !== "°" && text[j] !== "o") return false;
-  j += 1;
-  // Após o º, precisa ter ao menos um espaço e mais dígitos (ID da pessoa)
-  if (text[j] !== " ") return false;
-  while (j < text.length && text[j] === " ") j++;
-  let idDigits = 0;
-  while (j < text.length && /\d/.test(text[j])) {
-    j++;
-    idDigits++;
+  if (digits === 0) return false;
+
+  // Variante A: \d{1,4}[ºo°] \d{4,}
+  if (
+    digits <= 4 &&
+    (text[j] === "º" || text[j] === "°" || text[j] === "o")
+  ) {
+    j += 1;
+    if (text[j] !== " ") return false;
+    while (j < text.length && text[j] === " ") j++;
+    let idDigits = 0;
+    while (j < text.length && /\d/.test(text[j])) {
+      j++;
+      idDigits++;
+    }
+    return idDigits >= 4;
   }
-  return idDigits >= 4;
+
+  // Variante B: \d{5,7} <CAP><CAP>+
+  if (digits >= 5 && digits <= 7 && text[j] === " ") {
+    j += 1;
+    let upperLetters = 0;
+    while (j < text.length && /[A-ZÀ-Ý]/.test(text[j])) {
+      j++;
+      upperLetters++;
+    }
+    return upperLetters >= 2;
+  }
+
+  return false;
 }
 
 // Detecta início de entidade em listas de gabinete/secretarias do DOM-RJ

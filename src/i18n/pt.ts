@@ -97,7 +97,7 @@ export const pt: Translations = {
   demo_title_a: "Recortes no Diario Oficial",
   demo_title_b: "pref rj",
   demo_sub:
-    "Estudo pessoal: dado um nome e uma data, a automação acessa o Diário Oficial da Prefeitura do Rio de Janeiro (DOM-RJ), baixa a edição do dia e procura por recortes que mencionem aquele nome.",
+    "Automação RPA que consulta o Diário Oficial do Município do Rio de Janeiro (DOM-RJ), baixa a edição publicada na data informada e localiza recortes que mencionem o nome buscado — caso de uso típico de triagem automatizada de publicações oficiais.",
   demo_params: "params.toml",
   demo_ready: "ready",
   demo_name: "nome_busca",
@@ -128,8 +128,8 @@ export const pt: Translations = {
   pag_next: "próxima",
 
   contact_tag: "CONTATO / GET IN TOUCH",
-  contact_title_a: "vamos",
-  contact_title_b: "conversar?",
+  contact_title_a: "Entre em",
+  contact_title_b: "Contato",
   contact_sub:
     "Aberto a oportunidades em RPA, automação de processos e desenvolvimento Python. Resposta normalmente em 24h.",
   contact_phone: "telefone",

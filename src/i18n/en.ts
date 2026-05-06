@@ -97,7 +97,7 @@ export const en: Translations = {
   demo_title_a: "Recortes no Diario Oficial",
   demo_title_b: "city of rio",
   demo_sub:
-    "Personal study: given a name and a date, the automation accesses the Rio de Janeiro Municipal Official Gazette (DOM-RJ), downloads that day's edition and searches for clippings mentioning the name.",
+    "RPA automation that queries the Rio de Janeiro Municipal Official Gazette (DOM-RJ), downloads the edition published on the given date and locates clippings mentioning the searched name — a typical use case for automated screening of official publications.",
   demo_params: "params.toml",
   demo_ready: "ready",
   demo_name: "search_name",
@@ -128,8 +128,8 @@ export const en: Translations = {
   pag_next: "next",
 
   contact_tag: "CONTACT / GET IN TOUCH",
-  contact_title_a: "let's",
-  contact_title_b: "talk?",
+  contact_title_a: "Get in",
+  contact_title_b: "Touch",
   contact_sub:
     "Open to opportunities in RPA, process automation and Python development. Usually respond within 24h.",
   contact_phone: "phone",
