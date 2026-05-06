@@ -11,10 +11,6 @@ const UA =
 
 const FETCH_TIMEOUT_MS = 8000;
 const MAX_RECORTES = 80;
-// Hard cap on the paragraph window (chars before/after the match) — prevents
-// runaway slices when the text has no clear sentence boundary nearby.
-const MAX_PARA_BEFORE = 1200;
-const MAX_PARA_AFTER = 1200;
 // Soft deadline used to bail out of remaining work before the 10s Vercel
 // Hobby hard timeout. Leaves ~1.5s for response serialization.
 const SOFT_DEADLINE_MS = 8500;
@@ -202,15 +198,28 @@ function isEntityBoundary(text: string, i: number): boolean {
   return ENTITY_START.test(text.slice(i + 1, i + 30));
 }
 
+// Detecta início de registro tabular do tipo extrato de contrato / termo de
+// compromisso, marcado por palavras-chave seguidas de `:`. Cada bloco no
+// DOM-RJ começa com "Instrumento:" e isso é a fronteira mais limpa.
+const RECORD_START = /^Instrumento\s*:/;
+
+function isRecordBoundary(text: string, i: number): boolean {
+  if (text[i] !== " ") return false;
+  // Não quebra logo após pontuação interna (vírgula, dois-pontos, ponto-e-vírgula)
+  if (i > 0 && /[,:;]/.test(text[i - 1])) return false;
+  return RECORD_START.test(text.slice(i + 1, i + 16));
+}
+
 function extractParagraph(
   pageText: string,
   idx: number,
   nameLen: number
 ): { text: string; truncStart: boolean; truncEnd: boolean } {
-  // Walk back from `idx` to find the start of the current paragraph/ato/row/entity.
-  let start = Math.max(0, idx - MAX_PARA_BEFORE);
-  let foundStart = start === 0;
-  for (let i = idx - 2; i >= start; i--) {
+  // Walk back from `idx` to find the start of the current paragraph/ato/row/entity/record.
+  // Sem cap de chars: percorre até o início da página ou até achar fronteira.
+  let start = 0;
+  let foundStart = true;
+  for (let i = idx - 2; i >= 0; i--) {
     if (pageText[i] === "." && isSentenceBoundary(pageText, i)) {
       start = i + 2; // skip ". "
       foundStart = true;
@@ -221,6 +230,11 @@ function extractParagraph(
       foundStart = true;
       break;
     }
+    if (isRecordBoundary(pageText, i)) {
+      start = i + 1; // start AFTER the space, at "Instrumento:"
+      foundStart = true;
+      break;
+    }
     if (isEntityBoundary(pageText, i)) {
       start = i + 1; // start AFTER the space, at "Secretaria"
       foundStart = true;
@@ -228,12 +242,12 @@ function extractParagraph(
     }
   }
 
-  // Walk forward from end-of-name to find the end of the paragraph/ato/row/entity.
+  // Walk forward from end-of-name to find the end of the paragraph/ato/row/entity/record.
+  // Sem cap de chars: percorre até o fim da página ou até achar fronteira.
   const minEnd = idx + nameLen;
-  const maxEnd = Math.min(pageText.length, minEnd + MAX_PARA_AFTER);
-  let end = maxEnd;
-  let foundEnd = maxEnd === pageText.length;
-  for (let i = minEnd; i < maxEnd - 2; i++) {
+  let end = pageText.length;
+  let foundEnd = true;
+  for (let i = minEnd; i < pageText.length - 2; i++) {
     if (pageText[i] === "." && isSentenceBoundary(pageText, i)) {
       end = i + 1; // include the period itself
       foundEnd = true;
@@ -241,6 +255,11 @@ function extractParagraph(
     }
     if (isRowBoundary(pageText, i)) {
       end = i; // end at the space (right before next row's number)
+      foundEnd = true;
+      break;
+    }
+    if (isRecordBoundary(pageText, i)) {
+      end = i; // end at the space (right before next "Instrumento:")
       foundEnd = true;
       break;
     }
