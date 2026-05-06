@@ -94,8 +94,8 @@ export const en: Translations = {
   ],
 
   demo_tag: "DEMO",
-  demo_title_a: "Busca no Diário Oficial",
-  demo_title_b: "City of Rio de Janeiro",
+  demo_title_a: "Recortes no Diario Oficial",
+  demo_title_b: "city of rio",
   demo_sub:
     "Personal study: given a name and a date, the automation accesses the Rio de Janeiro Municipal Official Gazette (DOM-RJ), downloads that day's edition and searches for clippings mentioning the name.",
   demo_params: "params.toml",

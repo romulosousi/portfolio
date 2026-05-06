@@ -94,8 +94,8 @@ export const pt: Translations = {
   ],
 
   demo_tag: "DEMO",
-  demo_title_a: "Busca no Diário Oficial",
-  demo_title_b: "Prefeitura do RJ",
+  demo_title_a: "Recortes no Diario Oficial",
+  demo_title_b: "pref rj",
   demo_sub:
     "Estudo pessoal: dado um nome e uma data, a automação acessa o Diário Oficial da Prefeitura do Rio de Janeiro (DOM-RJ), baixa a edição do dia e procura por recortes que mencionem aquele nome.",
   demo_params: "params.toml",
