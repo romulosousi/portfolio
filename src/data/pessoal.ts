@@ -7,8 +7,8 @@ export const ME: Pessoal = {
   email: "romulosouza1738@gmail.com",
   telefone: "+55 (79) 99922-3549",
   github: {
-    handle: "github.com/romulosouza",
-    url: "https://github.com/romulosouza",
+    handle: "github.com/romulosousi",
+    url: "https://github.com/romulosousi",
   },
   linkedin: {
     handle: "linkedin.com/in/romulosouza",
