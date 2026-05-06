@@ -1,7 +1,7 @@
 import { useT } from "@/hooks/useT";
 
 export function Ticker() {
-  const { t, lang } = useT();
+  const { t } = useT();
   const items = [
     { k: "LANG", v: "PYTHON · DJANGO · FASTAPI · GIT · GITHUB", cls: "text-fg-0" },
     { k: t.t_status, v: t.t_status_v, cls: "text-green" },
