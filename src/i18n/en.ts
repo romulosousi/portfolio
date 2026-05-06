@@ -89,7 +89,7 @@ export const en: Translations = {
   sk_domain_items: ["RPA", "WebScraping"],
 
   demo_tag: "DEMO",
-  demo_title_a: "Recortes no Diario Oficial",
+  demo_title_a: "Clippings from the Diario Oficial",
   demo_title_b: "city of rio",
   demo_sub:
     "RPA automation that queries the Rio de Janeiro Municipal Official Gazette (DOM-RJ), downloads the edition published on the given date and locates clippings mentioning the searched name — a typical use case for automated screening of official publications.",
