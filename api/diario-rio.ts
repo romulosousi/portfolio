@@ -158,14 +158,40 @@ function isSentenceBoundary(text: string, periodIdx: number): boolean {
   return true;
 }
 
+// Detecta fronteira de linha em listas numeradas tipo "287º 2477074 NOME ...".
+// O DOM-RJ publica listas de classificados / concursos / processos numa única
+// linha sem pontuação, e sem essa heurística os recortes pegam dezenas de
+// entradas vizinhas até bater no cap de chars.
+//
+// `i` deve ser uma posição de espaço. Retorna true se logo após o espaço
+// começa um padrão tipo `\d{1,4}[ºo°]\s+\d{4,}` (número de ordem + ID).
+function isRowBoundary(text: string, i: number): boolean {
+  if (text[i] !== " ") return false;
+  let j = i + 1;
+  // Consome dígitos da posição (1-4 dígitos)
+  const digitStart = j;
+  while (j < text.length && /\d/.test(text[j])) j++;
+  const digits = j - digitStart;
+  if (digits < 1 || digits > 4) return false;
+  if (text[j] !== "º" && text[j] !== "°" && text[j] !== "o") return false;
+  j += 1;
+  // Após o º, precisa ter ao menos um espaço e mais dígitos (ID da pessoa)
+  if (text[j] !== " ") return false;
+  while (j < text.length && text[j] === " ") j++;
+  let idDigits = 0;
+  while (j < text.length && /\d/.test(text[j])) {
+    j++;
+    idDigits++;
+  }
+  return idDigits >= 4;
+}
+
 function extractParagraph(
   pageText: string,
   idx: number,
   nameLen: number
 ): { text: string; truncStart: boolean; truncEnd: boolean } {
-  // Walk back from `idx` to find the start of the current paragraph/ato.
-  // Stop at the first ". <Capital>" we find (excluding abbreviations), or at
-  // MAX_PARA_BEFORE chars, or at the page start.
+  // Walk back from `idx` to find the start of the current paragraph/ato/row.
   let start = Math.max(0, idx - MAX_PARA_BEFORE);
   let foundStart = start === 0;
   for (let i = idx - 2; i >= start; i--) {
@@ -174,9 +200,14 @@ function extractParagraph(
       foundStart = true;
       break;
     }
+    if (isRowBoundary(pageText, i)) {
+      start = i + 1; // start AFTER the space, at "287º"
+      foundStart = true;
+      break;
+    }
   }
 
-  // Walk forward from end-of-name to find the end of the paragraph/ato.
+  // Walk forward from end-of-name to find the end of the paragraph/ato/row.
   const minEnd = idx + nameLen;
   const maxEnd = Math.min(pageText.length, minEnd + MAX_PARA_AFTER);
   let end = maxEnd;
@@ -184,6 +215,11 @@ function extractParagraph(
   for (let i = minEnd; i < maxEnd - 2; i++) {
     if (pageText[i] === "." && isSentenceBoundary(pageText, i)) {
       end = i + 1; // include the period itself
+      foundEnd = true;
+      break;
+    }
+    if (isRowBoundary(pageText, i)) {
+      end = i; // end at the space (right before next row's number)
       foundEnd = true;
       break;
     }
