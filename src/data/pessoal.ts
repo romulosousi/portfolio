@@ -3,7 +3,10 @@ import type { Pessoal } from "@/types";
 export const ME: Pessoal = {
   nome: "Rômulo Souza",
   ticker: "ROMULO.RPA",
-  cidade: { pt: "Aracaju — SE", en: "Aracaju — Brazil" },
+  cidade: {
+    pt: "Aracaju — SE · Salvador — BA",
+    en: "Aracaju & Salvador — Brazil",
+  },
   email: "romulosouza1738@gmail.com",
   telefone: "+55 (79) 99922-3549",
   github: {
