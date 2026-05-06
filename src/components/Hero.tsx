@@ -97,7 +97,7 @@ export function Hero() {
               <Row label={t.role} value={t.role_short} />
               <Row
                 label={t.years}
-                value={lang === "pt" ? "3 anos em RPA" : "3 yrs in RPA"}
+                value={lang === "pt" ? "+ 3 anos em RPA" : "3+ yrs in RPA"}
               />
               <Row label={t.graduation} value={t.course_name} />
               <Row label={t.city} value={ME.cidade[lang]} />

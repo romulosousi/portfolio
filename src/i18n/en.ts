@@ -8,7 +8,7 @@ export const en: Translations = {
   ticker_role: "ROLE: RPA DEVELOPER",
   ticker_lang: "LANG: PYTHON",
   resumo:
-    "RPA Developer with 3 years of experience in process automation and data collection. I build Python solutions integrating APIs and systems, focused on digital transformation and operational efficiency.",
+    "RPA Developer with 3+ years of experience in process automation and data collection. I build Python solutions integrating APIs and systems, focused on digital transformation and operational efficiency.",
   hero_extra:
     "I work on automations for courts, fiscal systems, state and municipal portals.",
   cta_primary: "see work history",
