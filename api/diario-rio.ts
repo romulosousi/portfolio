@@ -186,12 +186,28 @@ function isRowBoundary(text: string, i: number): boolean {
   return idDigits >= 4;
 }
 
+// Detecta início de entidade em listas de gabinete/secretarias do DOM-RJ
+// — sumários da edição que listam uma entidade administrativa por linha em
+// formato `<Entidade Pessoa> <Próxima Entidade Pessoa>` sem fronteira de
+// sentença ou número de ordem. Os "ato" para um nome listado é a entidade
+// + a pessoa, então quebrar no início da próxima entidade dá um recorte
+// limpo do tipo "Fundação X — SIGLA <Nome>".
+const ENTITY_START =
+  /^(?:Secretaria|Empresa|Funda[cç][aã]o|Instituto|Companhia|Subprefeitura|Coordenadoria|Centro|Ag[eê]ncia|Procuradoria|Tribunal|Departamento|Diretoria|Conselho|C[aâ]mara|Gabinete|Subsecretaria|Coordena[cç][aã]o|Superintend[eê]ncia|Controladoria|Divis[aã]o|N[uú]cleo|Prefeitura|PREFEITURA|SECRETARIA|EMPRESA|FUNDA[CÇ][AÃ]O)\b/;
+
+function isEntityBoundary(text: string, i: number): boolean {
+  if (text[i] !== " ") return false;
+  // Should be preceded by a letter (end of person name), not punctuation
+  if (i === 0 || !/[a-zA-Zà-ÿÀ-Ý]/.test(text[i - 1])) return false;
+  return ENTITY_START.test(text.slice(i + 1, i + 30));
+}
+
 function extractParagraph(
   pageText: string,
   idx: number,
   nameLen: number
 ): { text: string; truncStart: boolean; truncEnd: boolean } {
-  // Walk back from `idx` to find the start of the current paragraph/ato/row.
+  // Walk back from `idx` to find the start of the current paragraph/ato/row/entity.
   let start = Math.max(0, idx - MAX_PARA_BEFORE);
   let foundStart = start === 0;
   for (let i = idx - 2; i >= start; i--) {
@@ -205,9 +221,14 @@ function extractParagraph(
       foundStart = true;
       break;
     }
+    if (isEntityBoundary(pageText, i)) {
+      start = i + 1; // start AFTER the space, at "Secretaria"
+      foundStart = true;
+      break;
+    }
   }
 
-  // Walk forward from end-of-name to find the end of the paragraph/ato/row.
+  // Walk forward from end-of-name to find the end of the paragraph/ato/row/entity.
   const minEnd = idx + nameLen;
   const maxEnd = Math.min(pageText.length, minEnd + MAX_PARA_AFTER);
   let end = maxEnd;
@@ -220,6 +241,11 @@ function extractParagraph(
     }
     if (isRowBoundary(pageText, i)) {
       end = i; // end at the space (right before next row's number)
+      foundEnd = true;
+      break;
+    }
+    if (isEntityBoundary(pageText, i)) {
+      end = i; // end at the space (right before next entity)
       foundEnd = true;
       break;
     }
