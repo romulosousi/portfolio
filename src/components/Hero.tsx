@@ -60,6 +60,13 @@ export function Hero() {
               >
                 {t.cta_secondary} <span className="text-fg-3">↗</span>
               </a>
+              <a
+                href="/curriculo.pdf"
+                download="Romulo-Souza-CV.pdf"
+                className="inline-flex items-center gap-2 px-5 h-10 rounded-[3px] mono text-[12px] uppercase tracking-[0.08em] text-fg-1 border border-line hover:border-green-dim hover:text-green transition-colors"
+              >
+                {t.cta_cv} <span className="text-fg-3">↓</span>
+              </a>
               <span className="ml-2 mono text-[11px] text-fg-2 hidden md:inline">
                 <span className="text-fg-3">$</span> {t.press_keys}{" "}
                 <kbd className="px-1.5 py-0.5 bg-bg-2 border border-line rounded text-[10px]">

@@ -13,6 +13,7 @@ export const en: Translations = {
     "I work on automations for courts, fiscal systems, state and municipal portals.",
   cta_primary: "see work history",
   cta_secondary: "get in touch",
+  cta_cv: "download cv",
   press_keys: "press",
 
   whoami: "whoami",

@@ -13,6 +13,7 @@ export const pt: Translations = {
     "Trabalho com automações para tribunais, sistemas fiscais, portais estaduais e municipais.",
   cta_primary: "ver trajetória",
   cta_secondary: "falar comigo",
+  cta_cv: "baixar currículo",
   press_keys: "press",
 
   whoami: "whoami",

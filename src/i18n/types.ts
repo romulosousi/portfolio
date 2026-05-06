@@ -10,6 +10,7 @@ export interface Translations {
   hero_extra: string;
   cta_primary: string;
   cta_secondary: string;
+  cta_cv: string;
   press_keys: string;
 
   // whoami
