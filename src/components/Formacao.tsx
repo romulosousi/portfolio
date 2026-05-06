@@ -20,8 +20,8 @@ export function Formacao() {
           }
         />
 
-        <div className="grid lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-7 hairline rounded-[4px] bg-bg-1">
+        <div className="grid lg:grid-cols-12 gap-4 items-stretch">
+          <div className="lg:col-span-7 hairline rounded-[4px] bg-bg-1 flex flex-col">
             <div className="flex items-center justify-between px-5 h-9 border-b border-line">
               <span className="mono text-[10px] uppercase tracking-[0.12em] text-fg-2">
                 {t.edu_panel}
@@ -30,7 +30,7 @@ export function Formacao() {
                 ● {t.edu_done}
               </span>
             </div>
-            <div className="p-5">
+            <div className="p-5 flex-1 flex flex-col">
               <div className="flex items-baseline justify-between flex-wrap gap-2 mb-1">
                 <div className="font-sans text-[22px] tracking-[-0.01em] text-fg-0">
                   {FORMACAO.curso[lang]}
@@ -43,7 +43,7 @@ export function Formacao() {
                 {FORMACAO.instituicao[lang]}
               </div>
 
-              <div className="hairline rounded-[4px] p-4 bg-bg-0">
+              <div className="hairline rounded-[4px] p-4 bg-bg-0 flex-1 flex flex-col justify-center">
                 <div className="flex items-center justify-between mb-2">
                   <div className="mono text-[10px] uppercase tracking-[0.12em] text-fg-2">
                     {t.edu_tcc_panel}
