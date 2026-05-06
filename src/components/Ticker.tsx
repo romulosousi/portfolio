@@ -3,7 +3,7 @@ import { useT } from "@/hooks/useT";
 export function Ticker() {
   const { t } = useT();
   const items = [
-    { k: "LANG", v: "PYTHON · DJANGO · FASTAPI · GIT · GITHUB", cls: "text-fg-0" },
+    { k: "LANG", v: "PYTHON · JAVA · DJANGO · FASTAPI · GIT · GITHUB", cls: "text-fg-0" },
     { k: t.t_status, v: t.t_status_v, cls: "text-green" },
     { k: "AUTO", v: "SELENIUM · PYAUTOGUI · REQUESTS · IMAP", cls: "text-fg-0" },
     { k: "DATA", v: "PANDAS · OPENPYXL · REGEX · APIs REST", cls: "text-fg-0" },

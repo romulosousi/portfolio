@@ -5,7 +5,7 @@ export function buildSkills(t: Translations): SkillGroup[] {
   return [
     {
       titulo: t.sk_g1,
-      items: ["Python", "Django", "FastAPI", "Git", "GitHub"],
+      items: ["Python", "Java", "Django", "FastAPI", "Git", "GitHub"],
     },
     {
       titulo: t.sk_g2,
