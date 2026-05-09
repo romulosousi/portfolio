@@ -91,7 +91,7 @@ export function Hero() {
 
             <div className="mb-3 hairline rounded-[4px] overflow-hidden bg-bg-2 aspect-square">
               <img
-                src="/me.jpg?v=3"
+                src="/me.jpg?v=4"
                 alt={ME.nome}
                 width={1200}
                 height={1200}
