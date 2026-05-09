@@ -91,7 +91,7 @@ export function Hero() {
 
             <div className="mb-3 hairline rounded-[4px] overflow-hidden bg-bg-2 aspect-square">
               <img
-                src="/me.png"
+                src="/me.png?v=2"
                 alt={ME.nome}
                 loading="lazy"
                 decoding="async"
