@@ -91,11 +91,13 @@ export function Hero() {
 
             <div className="mb-3 hairline rounded-[4px] overflow-hidden bg-bg-2 aspect-square">
               <img
-                src="/me.png?v=2"
+                src="/me.jpg?v=3"
                 alt={ME.nome}
-                loading="lazy"
+                width={1200}
+                height={1200}
+                fetchPriority="high"
                 decoding="async"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover"
               />
             </div>
 
