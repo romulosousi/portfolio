@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "tsc -b --noEmit"
+    "lint": "tsc -b --noEmit",
+    "cv": "tsx scripts/gen-cv.ts"
   },
   "dependencies": {
     "@fontsource/geist-sans": "^5.1.0",
@@ -27,6 +28,7 @@
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
+    "tsx": "^4.21.0",
     "typescript": "^5.5.3",
     "vite": "^5.3.4"
   }
