@@ -26,7 +26,7 @@ export const EXPERIENCIA: Experiencia[] = [
     stack: ["Python", "Selenium", "Requests", "PyAutoGUI"],
   },
   {
-    empresa: { pt: "Escritório contábil", en: "Accounting firm" },
+    empresa: { pt: "Kontulari Tecnologia", en: "Kontulari Tecnologia" },
     cargo: { pt: "RPA Developer", en: "RPA Developer" },
     periodo: { pt: "12/2025 — atual", en: "12/2025 — current" },
     local: { pt: "Sergipe — BR", en: "Sergipe — Brazil" },
@@ -54,7 +54,7 @@ export const EXPERIENCIA: Experiencia[] = [
     stack: ["Python", "Requests", "Selenium", "Certificate A1", "Regex"],
   },
   {
-    empresa: { pt: "TI corporativa", en: "Corporate IT" },
+    empresa: { pt: "CHIP Aracaju (Projeto)", en: "CHIP Aracaju (Project)" },
     cargo: { pt: "RPA Developer", en: "RPA Developer" },
     periodo: { pt: "12/2024 — 12/2025", en: "12/2024 — 12/2025" },
     local: { pt: "Sergipe — BR", en: "Sergipe — Brazil" },
@@ -104,7 +104,7 @@ export const EXPERIENCIA: Experiencia[] = [
     stack: ["Python", "Django", "Selenium", "PyAutoGUI", "Requests"],
   },
   {
-    empresa: { pt: "Escritório de advocacia", en: "Law firm" },
+    empresa: { pt: "Monteiro Nascimento Advogados", en: "Monteiro Nascimento Advogados" },
     cargo: { pt: "Analista de Sistemas Jr.", en: "Jr. Systems Analyst" },
     periodo: { pt: "02/2023 — 11/2024", en: "02/2023 — 11/2024" },
     local: { pt: "Sergipe — BR", en: "Sergipe — Brazil" },
