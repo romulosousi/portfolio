@@ -80,7 +80,7 @@ export const EXPERIENCIA: Experiencia[] = [
     stack: ["Python", "IMAP", "Selenium", "Active Directory", "MS Dynamics"],
   },
   {
-    empresa: { pt: "Consultoria em automação", en: "Automation consultancy" },
+    empresa: { pt: "Vivais", en: "Vivais" },
     cargo: { pt: "RPA Developer", en: "RPA Developer" },
     periodo: { pt: "12/2024 — 12/2025", en: "12/2024 — 12/2025" },
     local: { pt: "Sergipe — BR", en: "Sergipe — Brazil" },
