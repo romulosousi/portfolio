@@ -90,6 +90,24 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}) {
   }
 }
 
+// Mensagens do DOM-RJ que indicam "sem edição" para a data (domingo, feriado,
+// recesso). Confirmado: em 2026-05-10 (domingo) o upstream devolve HTTP 200
+// com {erro:true, msg:"Edição não existente!", itens:[]}. Tratamos como
+// sem_edicao em vez de propagar como erro fatal.
+const NO_EDITION_PATTERNS: RegExp[] = [
+  // "Edição não existente!", "Edições não existem"
+  /edi[cç](?:[aã]o|[oõ])e?s?\s+n[aã]o\s+exist/i,
+  // "Não há edição", "Não existem edições", "Não foi encontrada edição"
+  /n[aã]o\s+(?:h[aá]|existe|existem|foi|foram).{0,30}edi[cç]/i,
+  // "Sem edição", "Sem publicação"
+  /sem\s+(?:edi[cç]|publica[cç])/i,
+  // "Nenhuma edição"
+  /nenhuma\s+edi[cç]/i,
+];
+
+const isNoEditionMessage = (msg: string) =>
+  NO_EDITION_PATTERNS.some((re) => re.test(msg));
+
 async function fetchListing(data: string): Promise<ListingItem[]> {
   const r = await fetchWithTimeout(`${LISTING_URL}/${data}.json`, {
     headers: {
@@ -99,7 +117,10 @@ async function fetchListing(data: string): Promise<ListingItem[]> {
   });
   if (!r.ok) throw new Error(`listing HTTP ${r.status}`);
   const json = (await r.json()) as ListingResponse;
-  if (json.erro) throw new Error(`listing error: ${json.msg}`);
+  if (json.erro) {
+    if (isNoEditionMessage(json.msg ?? "")) return [];
+    throw new Error(`listing error: ${json.msg}`);
+  }
   return json.itens ?? [];
 }
 
